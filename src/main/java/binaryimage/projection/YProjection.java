@@ -1,7 +1,7 @@
 package binaryimage.projection;
 
 import binaryimage.BinaryImage;
-import binaryimage.Rectangle;
+import binaryimage.area.rectangle.Rectangle;
 
 /**
  * Created by Artyom on 04.03.2016.

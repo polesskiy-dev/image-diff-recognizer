@@ -1,6 +1,6 @@
 import binaryimage.BinaryImage;
-import binaryimage.RectangleSplitter;
-import binaryimage.Rectangle;
+import binaryimage.area.rectangle.RectangleSplitter;
+import binaryimage.area.rectangle.Rectangle;
 import binaryimage.projection.Projection;
 import binaryimage.projection.XProjection;
 import binaryimage.projection.YProjection;
@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formatter;
 
 /**
  * Created by Artyom on 04.03.2016.
@@ -25,7 +26,7 @@ public class TestProjection {
         BinaryImage binaryImage = new BinaryImage(testMatrix);
         Rectangle scope = new Rectangle(0, 0, binaryImage.getWidth(), binaryImage.getHeight());
         System.out.printf("Binary image :\r\n%s\r\n", binaryImage);
-        System.out.printf("Scope:\r\n%s\r\n", binaryImage.areaFromScope(scope));
+        System.out.printf("Scope:\r\n%s\r\n", areaFromScope(binaryImage,scope));
 
         //project to axis
         Projection xProjection = new XProjection(binaryImage, scope);
@@ -98,7 +99,7 @@ public class TestProjection {
 
         //debug
         System.out.printf("Binary image :\r\n%s\r\n", binaryImage);
-        System.out.printf("Scope: %s\r\n%s\r\n", scope, binaryImage.areaFromScope(scope));
+        System.out.printf("Scope: %s\r\n%s\r\n", scope, areaFromScope(binaryImage,scope));
 
 //        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
 //        ArrayList<Rectangle> subRectangles = getSignificantSubRectangles(new ArrayList<>(Arrays.asList(new Rectangle[]{scope})), binaryImage);
@@ -112,7 +113,7 @@ public class TestProjection {
 //            }
 //        }
         System.out.printf("Result rectangles:%s\r\n", subRectangles);
-        for (Rectangle rect : subRectangles) System.out.println(binaryImage.areaFromScope(rect));
+        for (Rectangle rect : subRectangles) System.out.println(areaFromScope(binaryImage,rect));
     }
 
 //    private ArrayList<Rectangle> splitEvery(ArrayList<Rectangle> bigRectangles, BinaryImage binaryImage) {
@@ -128,6 +129,17 @@ public class TestProjection {
 //        return subRectangles;
 //    }
 
+        public String areaFromScope(BinaryImage binaryImage, Rectangle scope) {
+        StringBuffer imageStringBuffer = new StringBuffer();
+
+        for (int X = scope.getxLeft(); X < scope.getxRight(); X++) {
+            for (int Y = scope.getyLeft(); Y < scope.getyRight(); Y++) {
+                imageStringBuffer.append(new Formatter().format("%d ", binaryImage.getBooleanMatrixImage()[X][Y] ? 1 : 0));
+            }
+            imageStringBuffer.append("\r\n");
+        }
+        return imageStringBuffer.toString();
+    }
 
 
 

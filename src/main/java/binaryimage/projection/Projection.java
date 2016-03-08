@@ -1,11 +1,8 @@
 package binaryimage.projection;
 
 import binaryimage.BinaryImage;
-import binaryimage.Rectangle;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Artyom on 04.03.2016.
