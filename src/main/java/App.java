@@ -24,7 +24,7 @@ public class App {
             BinaryImage binaryImage = new BinaryImage(testImage);
             System.out.printf("Binary image:\r\n%s\r\n",binaryImage);
 
-//TODO recusivelly split by X and Y
+
 
         } catch (IOException e) {
             e.printStackTrace();

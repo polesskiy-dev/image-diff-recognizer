@@ -4,6 +4,7 @@ import binaryimage.projection.Projection;
 import binaryimage.projection.XProjection;
 import binaryimage.projection.YProjection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -54,16 +55,17 @@ public class Rectangle {
         return yRight;
     }
 
-    int[] getAsArray(){
-        return new int[]{xLeft,yLeft,xRight,yRight};
+    int[] getAsArray() {
+        return new int[]{xLeft, yLeft, xRight, yRight};
     }
 
     /**
      * Rectangle scope contains only "false" values
+     *
      * @param binaryImage
      * @return
      */
-    public boolean isEmpty(BinaryImage binaryImage){
+    public boolean isEmpty(BinaryImage binaryImage) {
         Projection xProjection = new XProjection(binaryImage, this);
         Projection yProjection = new YProjection(binaryImage, this);
         return xProjection.isAllFalse() && yProjection.isAllFalse();
@@ -71,14 +73,16 @@ public class Rectangle {
 
     /**
      * Rectangle projection on any axis contains only "true" values
+     *
      * @param binaryImage
      * @return
      */
-    public boolean isFull(BinaryImage binaryImage){
+    public boolean isFull(BinaryImage binaryImage) {
         Projection xProjection = new XProjection(binaryImage, this);
         Projection yProjection = new YProjection(binaryImage, this);
         return xProjection.isAllTrue() && yProjection.isAllTrue();
     }
+
 
     @Override
     public String toString() {

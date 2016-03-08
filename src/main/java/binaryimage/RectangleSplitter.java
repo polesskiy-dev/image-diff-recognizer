@@ -16,19 +16,54 @@ public class RectangleSplitter {
         this.binaryImage = binaryImage;
     }
 
-    public ArrayList<Rectangle> split(Rectangle bigRectangle) {
-        ArrayList<Rectangle> subRectangles = new ArrayList<>();
+    /**
+     * Split to rectangles, which contains "full" areas (X,Y axis projection gives true,true,..,true sequence)
+     *
+     * @return
+     */
+    public ArrayList<Rectangle> getSignificantSubRectangles(Rectangle rectangleToSplit) {
+        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
+
+        //result rectangles, which contains "full" areas (X,Y axis projection gives true,true,..,true sequence)
+        ArrayList<Rectangle> resultRectangles = new ArrayList<>();
+        resultRectangles.add(rectangleToSplit);
+
+        /*
+        Replace every splittable Rectangle by their splitting result Rectangles
+        dirty hack - remember that cycle body will be invoked before 2nd "for" condition checking
+         */
+        for (int i = 0; i < resultRectangles.size(); ) {
+            ArrayList<Rectangle> subRectangles = rectangleSplitter.splitToSub(resultRectangles.get(i));
+            //System.out.printf("splitToSub from %d rectangles, number %d, to:%s\r\n",resultRectangles.size(),i,subRectangles);
+            if (subRectangles != null) {
+                resultRectangles.remove(i);
+                resultRectangles.addAll(i, subRectangles);
+            } else i++;
+        }
+
+        return resultRectangles;
+    }
+
+    /**
+     * Split to rectangles which contains "true" dots
+     * first trying to split by X axis, if can't - trying by Y
+     *
+     * @param bigRectangle
+     * @return
+     */
+    private ArrayList<Rectangle> splitToSub(Rectangle bigRectangle) {
+        ArrayList<Rectangle> subRectangles;// = new ArrayList<>();
         Projection xProjection = new XProjection(binaryImage, bigRectangle);
         Projection yProjection = new YProjection(binaryImage, bigRectangle);
 
-        //try to split by X axis if projection could be split
+        //try to splitToSub by X axis if projection could be splitToSub
         if (xProjection.isAllFalse() == false && xProjection.isAllTrue() == false) {
             //debug
             System.out.println("Splitting by X axis");
 
             subRectangles = this.splitByX(bigRectangle);
         } else
-            //try to split by Y axis if projection could be split
+            //try to splitToSub by Y axis if projection could be splitToSub
             if (yProjection.isAllFalse() == false && yProjection.isAllTrue() == false) {
                 //debug
                 System.out.println("Splitting by Y axis");
@@ -39,7 +74,13 @@ public class RectangleSplitter {
         return subRectangles;
     }
 
-    public ArrayList<Rectangle> splitByX(Rectangle bigRectangle) {
+    /**
+     * Split to sub rectangles by X axis
+     *
+     * @param bigRectangle
+     * @return
+     */
+    private ArrayList<Rectangle> splitByX(Rectangle bigRectangle) {
         ArrayList<Rectangle> subRectangles = new ArrayList<>();
 
         //project big rectangle to X axis
@@ -59,14 +100,20 @@ public class RectangleSplitter {
 
         //debug
         for (Rectangle rectangle : subRectangles) {
-            System.out.printf("X split rectangle: %s, empty: %b, full: %b\n", rectangle, rectangle.isEmpty(binaryImage), rectangle.isFull(binaryImage));
+            System.out.printf("X splitToSub rectangle: %s, empty: %b, full: %b\n", rectangle, rectangle.isEmpty(binaryImage), rectangle.isFull(binaryImage));
             System.out.printf("%s\r\n", binaryImage.areaFromScope(rectangle));
         }
 
         return subRectangles;
     }
 
-    public ArrayList<Rectangle> splitByY(Rectangle bigRectangle) {
+    /**
+     * Split to sub rectangles by X axis
+     *
+     * @param bigRectangle
+     * @return
+     */
+    private ArrayList<Rectangle> splitByY(Rectangle bigRectangle) {
         ArrayList<Rectangle> subRectangles = new ArrayList<>();
 
         //project big rectangle to Y axis
@@ -86,12 +133,10 @@ public class RectangleSplitter {
 
         //debug
         for (Rectangle rectangle : subRectangles) {
-            System.out.printf("Y split rectangle: %s, empty: %b, full: %b\n", rectangle, rectangle.isEmpty(binaryImage), rectangle.isFull(binaryImage));
+            System.out.printf("Y splitToSub rectangle: %s, empty: %b, full: %b\n", rectangle, rectangle.isEmpty(binaryImage), rectangle.isFull(binaryImage));
             System.out.printf("%s\r\n", binaryImage.areaFromScope(rectangle));
         }
 
         return subRectangles;
     }
-
-
 }

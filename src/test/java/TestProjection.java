@@ -46,43 +46,43 @@ public class TestProjection {
         }
     }
 
-    //    @Test
-    public void testXsplitting() {
-        boolean[][] testMatrix = new boolean[][]{
-                {false, true, false, true},
-                {false, false, false, false},
-                {true, true, true, true},
-                {false, true, false, false}
-        };
-        BinaryImage binaryImage = new BinaryImage(testMatrix);
-        Rectangle scope = new Rectangle(0, 0, binaryImage.getWidth(), binaryImage.getHeight());
-        System.out.printf("Binary image :\r\n%s\r\n", binaryImage);
-        System.out.printf("Scope: %s\r\n%s\r\n", scope, binaryImage.areaFromScope(scope));
-
-        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
-
-        //get list of rectangles by splitting big rectangle scope by X axis
-        ArrayList<Rectangle> xSplittedRectangles = rectangleSplitter.splitByX(scope);
-    }
-
-    //    @Test
-    public void testYsplitting() {
-        boolean[][] testMatrix = new boolean[][]{
-                {false, true, false, true},
-                {false, false, false, false},
-                {true, true, false, true},
-                {false, true, false, false}
-        };
-        BinaryImage binaryImage = new BinaryImage(testMatrix);
-        Rectangle scope = new Rectangle(0, 0, binaryImage.getWidth(), binaryImage.getHeight());
-        System.out.printf("Binary image :\r\n%s\r\n", binaryImage);
-        System.out.printf("Scope: %s\r\n%s\r\n", scope, binaryImage.areaFromScope(scope));
-
-        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
-
-        //get list of rectangles by splitting big rectangle scope by X axis
-        ArrayList<Rectangle> ySplittedRectangles = rectangleSplitter.splitByY(scope);
-    }
+//    //    @Test
+//    public void testXsplitting() {
+//        boolean[][] testMatrix = new boolean[][]{
+//                {false, true, false, true},
+//                {false, false, false, false},
+//                {true, true, true, true},
+//                {false, true, false, false}
+//        };
+//        BinaryImage binaryImage = new BinaryImage(testMatrix);
+//        Rectangle scope = new Rectangle(0, 0, binaryImage.getWidth(), binaryImage.getHeight());
+//        System.out.printf("Binary image :\r\n%s\r\n", binaryImage);
+//        System.out.printf("Scope: %s\r\n%s\r\n", scope, binaryImage.areaFromScope(scope));
+//
+//        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
+//
+//        //get list of rectangles by splitting big rectangle scope by X axis
+//        ArrayList<Rectangle> xSplittedRectangles = rectangleSplitter.splitByX(scope);
+//    }
+//
+//    //    @Test
+//    public void testYsplitting() {
+//        boolean[][] testMatrix = new boolean[][]{
+//                {false, true, false, true},
+//                {false, false, false, false},
+//                {true, true, false, true},
+//                {false, true, false, false}
+//        };
+//        BinaryImage binaryImage = new BinaryImage(testMatrix);
+//        Rectangle scope = new Rectangle(0, 0, binaryImage.getWidth(), binaryImage.getHeight());
+//        System.out.printf("Binary image :\r\n%s\r\n", binaryImage);
+//        System.out.printf("Scope: %s\r\n%s\r\n", scope, binaryImage.areaFromScope(scope));
+//
+//        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
+//
+//        //get list of rectangles by splitting big rectangle scope by X axis
+//        ArrayList<Rectangle> ySplittedRectangles = rectangleSplitter.splitByY(scope);
+//    }
 
     @Test
     public void testRecursiveSplitting() {
@@ -90,8 +90,8 @@ public class TestProjection {
                 {false, true, false, true},
                 {false, false, false, false},
                 {true, true, false, true},
+                {false, true, false, false},
                 {false, true, false, false}
-//                {false, false, true, false}
         };
         BinaryImage binaryImage = new BinaryImage(testMatrix);
         Rectangle scope = new Rectangle(0, 0, binaryImage.getWidth(), binaryImage.getHeight());
@@ -101,7 +101,9 @@ public class TestProjection {
         System.out.printf("Scope: %s\r\n%s\r\n", scope, binaryImage.areaFromScope(scope));
 
 //        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
-        ArrayList<Rectangle> subRectangles = splitRect(scope, binaryImage);
+//        ArrayList<Rectangle> subRectangles = getSignificantSubRectangles(new ArrayList<>(Arrays.asList(new Rectangle[]{scope})), binaryImage);
+
+        ArrayList<Rectangle> subRectangles = new RectangleSplitter(binaryImage).getSignificantSubRectangles(scope);
 
 //        ArrayList<Rectangle> subRectangles = rectangleSplitter.split(scope);
 //        if (subRectangles != null) {
@@ -109,7 +111,8 @@ public class TestProjection {
 //                rectangleSplitter.split(subRect);
 //            }
 //        }
-        System.out.printf("Result rectangles:%s",subRectangles);
+        System.out.printf("Result rectangles:%s\r\n", subRectangles);
+        for (Rectangle rect : subRectangles) System.out.println(binaryImage.areaFromScope(rect));
     }
 
 //    private ArrayList<Rectangle> splitEvery(ArrayList<Rectangle> bigRectangles, BinaryImage binaryImage) {
@@ -125,20 +128,6 @@ public class TestProjection {
 //        return subRectangles;
 //    }
 
-    private ArrayList<Rectangle> splitRect(Rectangle bigRectangle, BinaryImage binaryImage) {
-        RectangleSplitter rectangleSplitter = new RectangleSplitter(binaryImage);
-        ArrayList<Rectangle> subRectangles;// = new ArrayList<>();
-
-//        if (bigRectangle!=null){
-        subRectangles = rectangleSplitter.split(bigRectangle);
-        if (subRectangles != null) {
-            for (Rectangle rectangle : subRectangles) {
-                splitRect(rectangle, binaryImage);
-            }
-        } else return null;
-
-        return subRectangles;
-    }
 
 
 
