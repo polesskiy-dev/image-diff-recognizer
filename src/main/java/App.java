@@ -31,6 +31,8 @@ public class App {
 
             System.out.printf("Binary image created\r\nwidth: %d height: %d\r\n", binaryImage.getWidth(), binaryImage.getHeight());
 
+            long startSearchingRectanglesTimeStamp = System.currentTimeMillis();
+
             /*
             main algorithm
              */
@@ -45,7 +47,7 @@ public class App {
             //end algorithm timestamp
             long endTimeStamp = System.currentTimeMillis();
 
-            System.out.printf("All done. Algorithm duration %d ms \r\n", endTimeStamp - startTimeStamp);
+            System.out.printf("All done. Comparing images and searching for wrapping rectangles duration %d ms \r\nOnly searching for wrapping rectangles: %d ms\r\n", endTimeStamp - startTimeStamp, endTimeStamp - startSearchingRectanglesTimeStamp);
             System.out.printf("Result rectangles amount: %d, rectangles coordinates:%s \r\n", subRectangles.size(), subRectangles);
 
             /*
